@@ -29,21 +29,22 @@ function processCommand(command) {
 }
 
 function executeShow(){
+    let comments = getAllTODOes()
+    console.log(comments);
+}
+
+function getAllTODOes() {
     let comments = []
     let files = getFiles()
     for (const file of files) {
         comments = comments.concat(get_TODOes(file));
     }
-    console.log(comments);
+    return comments;
 }
 function getImportntToDos(){
-    let files = getFiles();
-    for (let file of files) {
-        let allToDos = get_TODOes(file);
-        for (let ToDo of allToDos) {
-            if (ToDo.includes('!')) {
-                console.log(ToDo);
-            }
+    for (let toDo of getAllTODOes()) {
+        if (toDo.includes('!')) {
+            console.log(toDo);
         }
     }
 }
