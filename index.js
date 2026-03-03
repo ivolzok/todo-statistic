@@ -12,6 +12,16 @@ function getFiles() {
 }
 
 function processCommand(command) {
+    let name;
+    let date;
+    if (command.startsWith('user')) {
+        name = command.split(' ')[1].toLowerCase();
+        command = "user";
+    }
+    if (command.startsWith('date')){
+        date = command.split(' ')[1].toLowerCase();
+        command = "date";
+    }
     switch (command.split(' ')[0]) {
         case 'exit':
             process.exit(0);
@@ -35,10 +45,50 @@ function processCommand(command) {
                 executeSortDate(comments)
             }
             break;
+        case 'user':
+            executeUser(name);
+            break;
+        case 'date':
+            executeDate(date);
+            break;
         default:
             console.log('wrong command');
             break;
     }
+}
+
+function executeDate(currentStringDate) {
+    let comments = getAllTODOes();
+    let currentDate = new Date(currentStringDate);
+    for (let comment of comments){
+        let commentDateString = findDate(comment);
+        if (commentDateString){
+            let commentDate = new Date(commentDateString);
+            if (commentDate.getTime() > currentDate.getTime()) {
+                console.log(comment);
+            }
+        }
+    }
+}
+
+function findDate(str) {
+    const regex = /\d{4}-\d{2}-\d{2}/;
+    const match = str.match(regex);
+    return match ? match[0] : "";
+}
+
+function executeUser(name){
+    let comments = getAllTODOes();
+    for (let comment of comments){
+        if (findSubstringIgnoreCase(comment, name)){
+            let lastSeparatorIndex = comment.lastIndexOf(';');
+            console.log(comment.slice(lastSeparatorIndex + 1));
+        }
+    }
+}
+
+function findSubstringIgnoreCase(str, searchStr) {
+    return str.toLowerCase().includes(searchStr.toLowerCase());
 }
 
 function executeShow(){
