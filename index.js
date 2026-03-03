@@ -17,12 +17,7 @@ function processCommand(command) {
             process.exit(0);
             break;
         case 'show':
-            let comments = []
-            let files = getFiles()
-            for (const file of files) {
-                comments = comments.concat(get_TODOes(file));
-            }
-            console.log(comments);
+            executeShow()
             break;
         case 'important':
             getImportntToDos();
@@ -33,6 +28,14 @@ function processCommand(command) {
     }
 }
 
+function executeShow(){
+    let comments = []
+    let files = getFiles()
+    for (const file of files) {
+        comments = comments.concat(get_TODOes(file));
+    }
+    console.log(comments);
+}
 function getImportntToDos(){
     let files = getFiles();
     for (let file of files) {
