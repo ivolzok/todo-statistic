@@ -13,9 +13,14 @@ function getFiles() {
 
 function processCommand(command) {
     let name;
+    let date;
     if (command.startsWith('user')) {
         name = command.split(' ')[1].toLowerCase();
         command = "user";
+    }
+    if (command.startsWith('date')){
+        date = command.split(' ')[1].toLowerCase();
+        command = "date";
     }
     switch (command) {
         case 'exit':
@@ -30,10 +35,33 @@ function processCommand(command) {
         case 'user':
             executeUser(name);
             break;
+        case 'date':
+            executeDate(date);
+            break;
         default:
             console.log('wrong command');
             break;
     }
+}
+
+function executeDate(currentStringDate) {
+    let comments = getAllTODOes();
+    let currentDate = new Date(currentStringDate);
+    for (let comment of comments){
+        let commentDateString = findDate(comment);
+        if (commentDateString){
+            let commentDate = new Date(commentDateString);
+            if (commentDate.getTime() > currentDate.getTime()) {
+                console.log(comment);
+            }
+        }
+    }
+}
+
+function findDate(str) {
+    const regex = /\d{4}-\d{2}-\d{2}/;
+    const match = str.match(regex);
+    return match ? match[0] : "";
 }
 
 function executeUser(name){
