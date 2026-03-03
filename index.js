@@ -19,9 +19,23 @@ function processCommand(command) {
         case 'show':
             let a = readFile('console.js')
             console.log(get_TODOes(a));
+        case 'important':
+            getImportntToDos();
         default:
             console.log('wrong command');
             break;
+    }
+}
+
+function getImportntToDos(){
+    let files = getFiles();
+    for (let file of files) {
+        let allToDos = get_TODOes(file);
+        for (let ToDo of allToDos) {
+            if (ToDo.includes('!')) {
+                console.log(ToDo);
+            }
+        }
     }
 }
 
