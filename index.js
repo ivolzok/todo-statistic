@@ -17,8 +17,13 @@ function processCommand(command) {
             process.exit(0);
             break;
         case 'show':
-            let a = readFile('console.js')
-            console.log(get_TODOes(a));
+            let comments = []
+            let files = getFiles()
+            for (const file of files) {
+                comments = comments.concat(get_TODOes(file));
+            }
+            console.log(comments);
+            break;
         default:
             console.log('wrong command');
             break;
