@@ -12,6 +12,11 @@ function getFiles() {
 }
 
 function processCommand(command) {
+    let name;
+    if (command.startsWith('user')) {
+        name = command.split(' ')[1].toLowerCase();
+        command = "user";
+    }
     switch (command) {
         case 'exit':
             process.exit(0);
@@ -22,10 +27,27 @@ function processCommand(command) {
         case 'important':
             getImportntToDos();
             break;
+        case 'user':
+            executeUser(name);
+            break;
         default:
             console.log('wrong command');
             break;
     }
+}
+
+function executeUser(name){
+    let comments = getAllTODOes();
+    for (let comment of comments){
+        if (findSubstringIgnoreCase(comment, name)){
+            let lastSeparatorIndex = comment.lastIndexOf(';');
+            console.log(comment.slice(lastSeparatorIndex + 1));
+        }
+    }
+}
+
+function findSubstringIgnoreCase(str, searchStr) {
+    return str.toLowerCase().includes(searchStr.toLowerCase());
 }
 
 function executeShow(){
